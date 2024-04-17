@@ -1,0 +1,43 @@
+name: "[toreis-up] CIワークフロー"
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # リポジトリをチェックアウト
+      - uses: actions/checkout@v4
+
+      # [課題] Node.js v20の環境をセットアップする
+      - name: 'Setup Node20'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # [課題] Nuxt.jsアプリケーションのパッケージをインストールする
+      - name: 'Install Packages'
+        run: |
+          npm ci
+        working-directory: app
+
+      # [課題] Nuxt.jsアプリケーションをビルドする
+      - name: 'Build Application'
+        run: |
+          npm run build
+        working-directory: app
+
+      - name: 'Prepare Test'
+        run: |
+          npx playwright install --with-deps
+        working-directory: app
+      
+      # [課題] Nuxt.jsアプリケーションのテストを実行する
+      - name: 'Test Application'
+        run: |
+          npm run e2e
+        working-directory: app

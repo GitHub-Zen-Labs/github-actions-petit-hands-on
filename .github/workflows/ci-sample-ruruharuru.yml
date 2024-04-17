@@ -31,7 +31,7 @@ jobs:
       # [課題] Nuxt.jsアプリケーションをビルドする
       - name: Build Nuxt.js app
         run:
-          npm crun build
+          npm run build
           # ここ以下のディレクトリで動く
         working-directory: app
 

@@ -1,0 +1,45 @@
+name: "[ruruharuru] CIワークフロー"
+
+on:
+  pull_request:
+    branches:
+      - main
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # リポジトリをチェックアウト
+      - uses: actions/checkout@v4
+
+      # [課題] Node.js v20の環境をセットアップする
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+         node-version: 20
+
+      # [課題] Nuxt.jsアプリケーションのパッケージをインストールする
+      - name: Install Nuxt.js app packages
+        run:
+          npm ci
+          # ここ以下のディレクトリで動く
+        working-directory: app
+
+      # - run: npm test
+      # [課題] Nuxt.jsアプリケーションをビルドする
+      - name: Build Nuxt.js app
+        run:
+          npm crun build
+          # ここ以下のディレクトリで動く
+        working-directory: app
+
+      # [課題] Nuxt.jsアプリケーションのテストを実行する
+      - name: Test Nuxt.js app
+        run:
+          # 場所を明示的にする
+          npx playwright install --with-deps
+          npm run e2e
+          # ここ以下のディレクトリで動け
+        working-directory: app

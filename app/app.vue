@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NuxtWelcome />
-    welcome to nuxt
+    <!-- <NuxtWelcome /> -->
+    <h1>Welcome to Waveleap study!</h1>
   </div>
 </template>

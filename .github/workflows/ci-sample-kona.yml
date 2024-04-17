@@ -1,0 +1,40 @@
+name: "[konapeso] CIワークフロー"
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # リポジトリをチェックアウト
+      - uses: actions/checkout@v4
+
+      # [課題] Node.js v20の環境をセットアップする
+      - name: Setup Node.js v20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # [課題] Nuxt.jsアプリケーションのパッケージをインストールする
+      # appディレクトリで実行する
+      - name: Install Nuxt.js application packages
+        run: |
+          npm ci
+        working-directory: app
+
+      # [課題] Nuxt.jsアプリケーションをビルドする
+      - name: Build Nuxt.js application
+        run: |
+          npm run build
+        working-directory: app
+
+      # [課題] Nuxt.jsアプリケーションのテストを実行する
+      - name: Test Nuxt.js application
+        run: |
+          npx playwright install --with-deps
+          npm run e2e
+        working-directory: app
